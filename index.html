@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Love ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Marhey:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Cairo', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(135deg, #ff4d6d, #ff758f, #ff8fa3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* قلوب متحركة للخلفية */
+.hearts {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+.heart {
+    position: absolute;
+    bottom: -20px;
+    color: rgba(255,255,255,0.7);
+    animation: float 10s linear infinite;
+    font-size: 20px;
+}
+
+@keyframes float {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+}
+
+.container {
+    position: relative;
+    z-index: 2;
+    width: 90%;
+    max-width: 500px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 25px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 0 25px rgba(0,0,0,0.2);
+    animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h1 {
+    font-family: 'Marhey', cursive;
+    color: white;
+    margin-bottom: 20px;
+    font-size: 32px;
+}
+
+p {
+    color: white;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 15px;
+    outline: none;
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 15px 25px;
+    border: none;
+    border-radius: 15px;
+    background: white;
+    color: #ff4d6d;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    margin: 10px;
+}
+
+button:hover {
+    transform: scale(1.05);
+    background: #ffdde1;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.options button {
+    display: block;
+    width: 100%;
+}
+
+/* شاشة الخسارة */
+.lose {
+    font-size: 35px;
+    color: white;
+    font-family: 'Marhey', cursive;
+    animation: shake 0.5s infinite alternate;
+}
+
+@keyframes shake {
+    from { transform: translateX(-5px); }
+    to { transform: translateX(5px); }
+}
+
+/* ستايل الظرف الكرتوني */
+.envelope-container {
+    position: relative;
+    width: 320px;
+    height: 220px;
+    margin: auto;
+    cursor: pointer;
+}
+
+.shaking-envelope {
+    animation: envelopeShake 0.4s infinite;
+}
+
+@keyframes envelopeShake {
+    0% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(-3deg) scale(1.02); }
+    50% { transform: rotate(0deg) scale(1); }
+    75% { transform: rotate(3deg) scale(1.02); }
+    100% { transform: rotate(0deg) scale(1); }
+}
+
+.envelope {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #ff99ac;
+    border-radius: 15px;
+    border: 4px dashed #fff;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.1), 0 10px 20px rgba(0,0,0,0.2);
+    overflow: hidden;
+}
+
+.envelope-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Marhey', cursive;
+    font-size: 26px;
+    color: white;
+    z-index: 3;
+    pointer-events: none;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    transition: 0.5s;
+}
+
+.envelope-container.open .envelope-text {
+    opacity: 0;
+}
+
+.flap {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #ff758f;
+    border-top: 4px dashed #fff;
+    clip-path: polygon(0 0, 100% 0, 50% 55%);
+    transform-origin: top;
+    transition: 1s;
+    z-index: 4;
+}
+
+.letter {
+    position: absolute;
+    width: 90%;
+    height: 200px;
+    background: #fff9e6;
+    top: 10px;
+    left: 5%;
+    border-radius: 10px;
+    border: 2px solid #ff4d6d;
+    padding: 15px;
+    overflow-y: auto;
+    transform: translateY(100%);
+    transition: 1s;
+    z-index: 2;
+    font-family: 'Marhey', cursive;
+    font-size: 16px;
+    color: #ff4d6d;
+    line-height: 1.8;
+    text-align: right;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.envelope-container.open .flap {
+    transform: rotateX(180deg);
+}
+
+.envelope-container.open .letter {
+    transform: translateY(-30px);
+}
+
+.love-img {
+    width: 120px;
+    margin-bottom: 15px;
+    animation: floatImg 3s infinite ease-in-out;
+}
+
+@keyframes floatImg {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+/* شاشة القلب السري */
+#secretHeartScene {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    flex-direction: column;
+}
+
+.heart-mask {
+    width: 250px;
+    height: 250px;
+    background-color: #ff0040;
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/></svg>');
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/></svg>');
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    position: relative;
+    cursor: pointer;
+    animation: bigHeartBeat 1s infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: 'Marhey', cursive;
+    font-size: 28px;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+    transition: all 1.5s ease-in-out;
+}
+
+@keyframes bigHeartBeat {
+    0% { transform: scale(1); }
+    15% { transform: scale(1.15); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+
+.heart-mask.opened {
+    background-color: transparent;
+    background-image: url('WhatsApp Image 2026-06-28 at 2.32.28 PM.jpeg'); /* اسم الصورة بتاعتك */
+    background-size: cover;
+    background-position: center top;
+    animation: none;
+    width: 320px;
+    height: 320px;
+    color: transparent;
+    text-shadow: none;
+}
+
+</style>
+</head>
+<body>
+
+<div class="hearts"></div>
+
+<div class="container" id="mainContainer">
+    <div id="page1">
+        <img class="love-img" src="https://cdn-icons-png.flaticon.com/512/833/833472.png">
+        <h1>❤️ Welcome يا لطخ ❤️</h1>
+        <p>اكتبي الباسورد يا حبيبتي 🥺</p>
+        <input type="password" id="password" placeholder="اكتبي الباسورد هنا">
+        <button onclick="checkPassword()">خشي يا لطخ ❤️</button>
+    </div>
+
+    <div id="quiz" class="hidden">
+        <h1 id="question"></h1>
+        <div class="options" id="options"></div>
+    </div>
+
+    <div id="losePage" class="hidden">
+        <div class="lose">انتي خسرتي يا عار 😭</div>
+    </div>
+
+    <div id="finalPage" class="hidden">
+        <h1>💌 رسالة ليكي 💌</h1>
+        
+        <div class="envelope-container shaking-envelope" onclick="openLetter(this)">
+            <div class="envelope"></div>
+            <div class="envelope-text">افتحني</div>
+            <div class="flap"></div>
+            <div class="letter">
+                <span id="letter-content"></span>
+            </div>
+        </div>
+        
+        <button id="showHeartBtn" class="hidden" onclick="showSecretHeart()" style="margin-top: 50px; display: block; width: 100%;">
+            تعالى موريك قلبي فيه إيه ❤️
+        </button>
+    </div>
+</div>
+
+<div id="secretHeartScene" class="hidden">
+    <div class="heart-mask" onclick="openHeart(this)">
+        افتحني
+    </div>
+</div>
+
+<script>
+/* إنشاء القلوب الخلفية */
+const heartsContainer = document.querySelector('.hearts');
+for(let i = 0; i < 40; i++){
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.innerHTML = '❤️';
+    heart.style.left = Math.random() * 100 + '%';
+    heart.style.animationDuration = (5 + Math.random() * 5) + 's';
+    heart.style.fontSize = (15 + Math.random() * 25) + 'px';
+    heartsContainer.appendChild(heart);
+}
+
+/* فحص الباسورد */
+function checkPassword(){
+    const pass = document.getElementById("password").value;
+    if(pass === "YOU ARE MY LIFE"){
+        document.getElementById("page1").classList.add("hidden");
+        document.getElementById("quiz").classList.remove("hidden");
+        showQuestion();
+    } else {
+        alert("الباسورد غلط يا لطخ 😭");
+    }
+}
+
+/* الأسئلة الجديدة */
+const questions = [
+    {
+        question: "اي اكتر لون يوسف بيحبو؟ 🎨",
+        answers: [
+            {text: "احمر", correct: false},
+            {text: "اسود", correct: true},
+            {text: "اخضر", correct: false},
+            {text: "ابيض", correct: false}
+        ]
+    },
+    {
+        question: "اي اول مكان اتقابلتي فيه انتي ويوسف وقعدتو سوا؟ 🌍",
+        answers: [
+            {text: "الفردوس", correct: true},
+            {text: "القصر", correct: false},
+            {text: "الشارع", correct: false},
+            {text: "الكليه", correct: false}
+        ]
+    },
+    {
+        question: "اي اكتر كلمه يوسف بيحب يندهك بيها؟ 🗣️",
+        answers: [
+            {text: "بطه", correct: false},
+            {text: "فاطمه", correct: false},
+            {text: "بطوط", correct: true}
+        ]
+    },
+    {
+        question: "تاريخ ميلاد يوسف كان كام؟ 🎂",
+        answers: [
+            {text: "8/18", correct: true},
+            {text: "7/15", correct: false},
+            {text: "10/12", correct: false}
+        ]
+    },
+    {
+        question: "اي اسم البنت الي يوسف خانك معاها؟ 😒",
+        answers: [
+            {text: "مريم", correct: false},
+            {text: "مياده", correct: false},
+            {text: "مروه", correct: true},
+            {text: "ملك", correct: false}
+        ]
+    },
+    {
+        question: "اي اكتر مكان يوسف اتخزوق فيه ودفع فيه فلوس على الفاضي (حسبي الله)؟ 💸",
+        answers: [
+            {text: "لافيستا", correct: false},
+            {text: "كذابلانكا", correct: false},
+            {text: "برنتو", correct: false},
+            {text: "جميع ما سبق", correct: true}
+        ]
+    },
+    {
+        question: "هل بطه انسانه ظالمه علشان مش سايبه يوسف يكلم حريم براحتو لما كانت مرتبطه بيه؟ 🥺",
+        answers: [
+            {text: "ايوه", correct: false},
+            {text: "اه", correct: false},
+            {text: "الاجابتين صح", correct: true}
+        ]
+    },
+    {
+        question: "هو يوسف حب كام واحده قبلك؟ 💔",
+        answers: [
+            {text: "2", correct: false},
+            {text: "1", correct: false},
+            {text: "3", correct: true}
+        ]
+    },
+    {
+        question: "هل كنتي تعلمي انك شبه القمر وعنيكي بحر غرام غرقت فيه؟! ❤️",
+        answers: [
+            {text: "اه", correct: true},
+            {text: "لا", correct: false}
+        ]
+    },
+    {
+        question: "هل يوسف بيحبك؟ 🫂",
+        answers: [
+            {text: "اه", correct: false},
+            {text: "ايوه", correct: false},
+            {text: "طبعا", correct: false},
+            {text: "التلت اجابات صح", correct: true}
+        ]
+    }
+];
+
+let currentQuestion = 0;
+
+function showQuestion(){
+    const q = questions[currentQuestion];
+    document.getElementById("question").innerText = q.question;
+    const options = document.getElementById("options");
+    options.innerHTML = "";
+    
+    q.answers.forEach(answer => {
+        const btn = document.createElement("button");
+        btn.innerText = answer.text;
+        btn.onclick = () => selectAnswer(answer.correct);
+        options.appendChild(btn);
+    });
+}
+
+function selectAnswer(correct){
+    if(correct){
+        currentQuestion++;
+        if(currentQuestion < questions.length){
+            showQuestion();
+        } else {
+            document.getElementById("quiz").classList.add("hidden");
+            document.getElementById("finalPage").classList.remove("hidden");
+        }
+    } else {
+        document.getElementById("quiz").classList.add("hidden");
+        document.getElementById("losePage").classList.remove("hidden");
+    }
+}
+
+/* أنيميشن كتابة الرسالة */
+const letterTextFull = `انا بحبك يا اغلى بطوط في حياتي ❤️<br><br>بتوحشيني اوووي لدرجه لا توصف يا لطخ 🥺<br><br>تعبت اووي علشان اخليكي توصلي للمسج دي مع ان كنت قادر ابعتها ليكي واتساب بس انا حبيت ابعتها ليكي بطريقة مميزة ❤️<br><br>بصي يا حبي انا مش هرغي كتير لكن يعلم ربنا بحبك وبربيكي كانك بنتي قبل ما تكوني حبيبتي ❤️<br><br>متبعديش عني وخليكي جمبي ارجوكي 🫂<br><br>انا مليش حد غيرك لقيت فيكي الشخص الي يفهمني ويحس بيا ❤️<br><br>ايوه انا مش احسن حد في الدنيا بس صدقيني بحاول اطلع اجمل اللي جوايا ليكي ❤️<br><br>بحبك يا روح قلبي ♥🫂`;
+
+let charIndex = 0;
+let isTypingStarted = false;
+
+function typeWriter() {
+    if (charIndex < letterTextFull.length) {
+        // علشان لو قابل كود زي <br> يكتبه على طول مياخدش وقت
+        if(letterTextFull.charAt(charIndex) === '<') {
+            let tag = "";
+            while(letterTextFull.charAt(charIndex) !== '>') {
+                tag += letterTextFull.charAt(charIndex);
+                charIndex++;
+            }
+            tag += '>';
+            document.getElementById("letter-content").innerHTML += tag;
+            charIndex++;
+            setTimeout(typeWriter, 0);
+        } else {
+            document.getElementById("letter-content").innerHTML += letterTextFull.charAt(charIndex);
+            charIndex++;
+            setTimeout(typeWriter, 40); // سرعة الكتابة
+        }
+    } else {
+        // إظهار زرار القلب بعد ما الرسالة تخلص كتابة
+        setTimeout(() => {
+            document.getElementById("showHeartBtn").classList.remove("hidden");
+        }, 500);
+    }
+}
+
+/* فتح الظرف */
+function openLetter(element){
+    if(element.classList.contains("open")) return; // يمنع يتفتح مرتين
+    element.classList.add("open");
+    element.classList.remove("shaking-envelope"); // توقيف الاهتزاز
+    
+    if(!isTypingStarted) {
+        isTypingStarted = true;
+        setTimeout(typeWriter, 1000); // يبدأ الكتابة بعد ثانية من فتح الظرف
+    }
+}
+
+/* إظهار مشهد القلب */
+function showSecretHeart() {
+    document.getElementById("mainContainer").classList.add("hidden");
+    document.getElementById("secretHeartScene").classList.remove("hidden");
+}
+
+/* فتح القلب لإظهار الصورة */
+function openHeart(element) {
+    element.innerHTML = ""; // مسح كلمة افتحني
+    element.classList.add("opened");
+}
+
+</script>
+
+</body>
+</html>
